@@ -1,0 +1,47 @@
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<link href="images/css.css" rel="stylesheet" type="text/css" />
+<link href="images/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$(function(){
+	$(".nav_sum li").mouseover(function(){
+		var index = $(".nav_sum li").index($(this));
+		$(".nav_sum2:nth-child("+(parseInt(index)+1)+")").show().siblings(".nav_sum2:visible").hide();
+	});
+	
+	if(new Date().getDay()==0)var week="星期日"; 
+	if(new Date().getDay()==1)var week="星期一"; 
+	if(new Date().getDay()==2)var week="星期二"; 
+	if(new Date().getDay()==3)var week="星期三"; 
+	if(new Date().getDay()==4)var week="星期四"; 
+	if(new Date().getDay()==5)var week="星期五"; 
+	if(new Date().getDay()==6)var week="星期六";
+	$("#date").html(new Date().getFullYear()+"年"+(new Date().getMonth()+1)+"月"+new Date().getDate()+"日 "+week);
+});
+</script>
+<div id="header">
+  <div class="headbar"> 
+    <a href="#" class="head_a">部门介绍</a>
+    <a href="#" class="head_a">联系我们</a>
+  </div>
+  <div id="nav">
+    <ul class="nav_sum">
+      <li<{if $fcateinfo.id==""}> class="li3"<{else}> class="li2"<{/if}>><a href="/">首页</a></li>
+      <li<{if $fcateinfo.id=="1"}> class="li3"<{/if}>><a href="content.php?fid=1">中心概况</a></li>
+      <li<{if $fcateinfo.id=="6"}> class="li3"<{/if}>><a href="list.php?fid=6">最新消息</a></li>
+      <li<{if $fcateinfo.id=="9"}> class="li3"<{/if}>><a href="list.php?fid=9">教学资源</a></li>
+      <li<{if $fcateinfo.id=="13"}> class="li3"<{/if}>><a href="content.php?fid=13&cid=14">实验实训</a></li>
+      <li<{if $fcateinfo.id=="18"}> class="li3"<{/if}>><a href="list.php?fid=18">党建园地</a></li>
+      <li<{if $fcateinfo.id=="21"}> class="li3"<{/if}>><a href="content.php?fid=21">办事指南</a></li>
+      <div class="clear"></div>
+    </ul>
+    <{foreach key=fid item=cates from=$newscate}>
+    <ul class="nav_sum2" fid="<{$fid}>"<{if $fcateinfo.id==""}><{if $fid>1}> style="display:none;"<{/if}><{else}><{if $fcateinfo.id!=$fid}> style="display:none;"<{/if}><{/if}>>
+    <{foreach item=v from=$cates}>
+      <li<{if $cateinfo.id==$v.id}> class="li2"<{/if}>><a href="<{if $v.alone==1}>content<{else}>list<{/if}>.php?fid=<{$fid}>&cid=<{$v.id}>"><{$v.title}></a></li>
+    <{/foreach}>
+      <div class="clear"></div>
+    </ul>
+    <{/foreach}>
+    <div class="nav_sum3"><strong>今天是：</strong><span id="date"></span></div>
+  </div>
+</div>

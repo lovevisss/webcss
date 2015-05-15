@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title><{$pagetitle}></title>
+<link href="images/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"> 
+// 自动滚动 
+function boxmove(d1,d2,d3,e,obj){ 
+    var speed=30; 
+    var demo=document.getElementById(d1);  
+    var demo1=document.getElementById(d2);  
+    var demo2=document.getElementById(d3); 
+    demo2.innerHTML=demo1.innerHTML; 
+    function boxTop(){ 
+            if(demo2.offsetTop-demo.scrollTop<=0){demo.scrollTop-=demo1.offsetHeight} 
+            else{demo.scrollTop++} 
+        } 
+    function boxRight(){ 
+            if(demo.scrollLeft<=0){demo.scrollLeft+=demo2.offsetWidth} 
+            else{demo.scrollLeft--} 
+        } 
+    function boxBottom(){  
+            if(demo1.offsetTop-demo.scrollTop>=0){demo.scrollTop+=demo2.offsetHeight} 
+            else{demo.scrollTop--} 
+        } 
+    function boxLeft(){ 
+            if(demo2.offsetWidth-demo.scrollLeft<=0){demo.scrollLeft-=demo1.offsetWidth} 
+            else{demo.scrollLeft++} 
+        } 
+    if(e==1){ 
+            var MoveTop=setInterval(boxTop,speed); 
+            demo.onmouseover=function(){clearInterval(MoveTop);} 
+            demo.onmouseout=function(){MoveTop=setInterval(boxTop,speed)} 
+        } 
+    if(e==2){ 
+            var MoveRight=setInterval(boxRight,speed); 
+            demo.onmouseover=function(){clearInterval(MoveRight)} 
+            demo.onmouseout=function(){MoveRight=setInterval(boxRight,speed)} 
+        } 
+    if(e==3){ 
+            var MoveBottom=setInterval(boxBottom,speed); 
+            demo.onmouseover=function(){clearInterval(MoveBottom);} 
+            demo.onmouseout=function(){MoveBottom=setInterval(boxBottom,speed)} 
+        } 
+    if(e==4){ 
+            var MoveLeft=setInterval(boxLeft,speed) 
+            demo.onmouseover=function(){clearInterval(MoveLeft)} 
+            demo.onmouseout=function(){MoveLeft=setInterval(boxLeft,speed)} 
+        } 
+    if(e=="top"){ 
+            MoveTop=setInterval(boxTop,speed) 
+            obj.onmouseout=function(){clearInterval(MoveTop);} 
+        } 
+    if(e=="right"){ 
+            MoveRight=setInterval(boxRight,speed) 
+            obj.onmouseout=function(){clearInterval(MoveRight);} 
+        } 
+    if(e=="bottom"){ 
+            MoveBottom=setInterval(boxBottom,speed) 
+            obj.onmouseout=function(){clearInterval(MoveBottom);} 
+        } 
+    if(e=="left"){ 
+            MoveLeft=setInterval(boxLeft,speed) 
+            obj.onmouseout=function(){clearInterval(MoveLeft);} 
+        } 
+    }     
+</script> 
+</head>
+<body>
+<!--头部-->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+  $(".nav_sum li").mouseover(function(){
+    var index = $(".nav_sum li").index($(this));
+    $(".nav_sum2:nth-child("+(parseInt(index)+1)+")").show().siblings(".nav_sum2:visible").hide();
+  });
+  
+  if(new Date().getDay()==0)var week="星期日"; 
+  if(new Date().getDay()==1)var week="星期一"; 
+  if(new Date().getDay()==2)var week="星期二"; 
+  if(new Date().getDay()==3)var week="星期三"; 
+  if(new Date().getDay()==4)var week="星期四"; 
+  if(new Date().getDay()==5)var week="星期五"; 
+  if(new Date().getDay()==6)var week="星期六";
+  $("#date").html(new Date().getFullYear()+"年"+(new Date().getMonth()+1)+"月"+new Date().getDate()+"日 "+week);
+});
+</script>
+<div id="head">
+  <div id="nav">
+    <ul class="nav_sum">
+      <li<{if $fcateinfo.id==""}> class="li3"<{else}> class="li2"<{/if}>><a href="/">首页</a></li>
+      <li<{if $fcateinfo.id=="1"}> class="li3"<{/if}>><a href="content.php?fid=1">中心概况</a></li>
+      <li<{if $fcateinfo.id=="6"}> class="li3"<{/if}>><a href="list.php?fid=6">最新消息</a></li>
+      <li<{if $fcateinfo.id=="9"}> class="li3"<{/if}>><a href="list.php?fid=9">教学资源</a></li>
+      <li<{if $fcateinfo.id=="13"}> class="li3"<{/if}>><a href="content.php?fid=13&cid=14">实验实训</a></li>
+      <li<{if $fcateinfo.id=="18"}> class="li3"<{/if}>><a href="list.php?fid=18">党建园地</a></li>
+      <li<{if $fcateinfo.id=="21"}> class="li3"<{/if}>><a href="content.php?fid=21">办事指南</a></li>
+      <div class="clear"></div>
+    </ul>
+    <{foreach key=fid item=cates from=$newscate}>
+    <ul class="nav_sum2" fid="<{$fid}>"<{if $fcateinfo.id==""}><{if $fid>1}> style="display:none;"<{/if}><{else}><{if $fcateinfo.id!=$fid}> style="display:none;"<{/if}><{/if}>>
+    <{foreach item=v from=$cates}>
+      <li<{if $cateinfo.id==$v.id}> class="li2"<{/if}>><a href="<{if $v.alone==1}>content<{else}>list<{/if}>.php?fid=<{$fid}>&cid=<{$v.id}>"><{$v.title}></a></li>
+    <{/foreach}>
+      <div class="clear"></div>
+    </ul>
+    <{/foreach}>
+    <div class="nav_sum3"><strong>今天是：</strong><span id="date"></span></div>
+  </div>
+</div>
+<!--头部结束-->
+<!--主体-->
+<div id="main">
+  <!--主体左侧-->
+  <div id="leftsidebar">
+    <div class="leftsum">
+      <h1>联系我们</h1>
+      <div class="leftsum_a">
+        <p><span>电话：</span>（0571）87571503</p>
+        <p><span>地址：</span>浙江省海宁市长安镇仰山路2号浙江财经大学东方学院1号实验楼404室</p>
+        <p><span>邮箱：</span>jyjs@zufedfc.edu.cn</p>
+        <p><span>传真：</span>（0571）87571503</p>
+      </div>
+    </div>
+    <ul class="leftsum2">
+      <li><a href="http://my.zufedfc.edu.cn" target=""><img src="images/img1.jpg" alt="门户测试" border="0" /></a></li>
+      <li><a href="http://wlkt.zufedfc.edu.cn:8080/" target=""><img src="images/img2.jpg" alt="网络课堂" border="0" /></a></li>
+      <li><a href="http://mail.zufedfc.edu.cn/" target=""><img src="images/img3.jpg" alt="电子邮箱" border="0" /></a></li>
+      <li><a href="http://jyjs.zufedfc.edu.cn/content.php?fid=13&cid=14" target=""><img src="images/img4.jpg" alt="实验教学" border="0" /></a></li>
+    </ul>
+    <div class="leftsum3">
+      <h2>友情链接</h2>
+      <form action="" method="get" class="leftsum3_form">
+        <select onchange="window.open(this.value)">
+        <{foreach item=v from=$friend}>
+          <option value="<{$v.url}>"><{$v.title}></option>
+        <{/foreach}>
+        </select>
+      </form>
+    </div>
+  </div>
+  <!--主体左侧结束-->
+  <!--主体右侧-->
+  <div id="rightsidebar">
+    <dl class="rightsum1">
+      <div>
+	  <script src="js/flash.js" language="javascript"></script>
+	  <script language="javascript">
+		CreateFlash("player", "images/photo_player.swf", 286, 229, "");
+		function getXml() {
+			return "<?xml version='1.0' encoding='utf-8'?><root><{foreach item=v from=$newspic}><p u='<{$v.titlepic}>' a='view.php?id=<{$v.id}>' n='<{leftstr string=$v.title length=13 etc="..."}>'/><{/foreach}></root>";
+		}
+	</script>
+	</div>
+    </dl>
+    <div class="rightsum2">
+      <h3>中心新闻<span class="more"><a href="list.php?fid=6&cid=7"><img src="images/more.jpg" /></a></span></h3>
+      <ul>
+      	<{foreach item=v from=$news1}>
+        <li><a target="_new" href="view.php?id=<{$v.id}>"><{leftstr string=$v.title length=30}></a><span><{$v.time|date_format:"%m-%d"}></span></li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <div class="rightsum3 fl">
+      <h3>常用下载<span class="more"><a href="list.php?fid=21&cid=23"><img src="images/more.jpg" /></a></span></h3>
+      <ul>
+        <{foreach item=v from=$news2}>
+        <li><a target="_new" href="view.php?id=<{$v.id}>"><{leftstr string=$v.title length=24}></a><span><{$v.time|date_format:"%m-%d"}></span></li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <div class="rightsum3 fr">
+      <h3>通知公告<span class="more"><a href="list.php?fid=6&cid=8"><img src="images/more.jpg" /></a></span></h3>
+      <ul>
+        <{foreach item=v from=$news3}>
+        <li><a target="_new" href="view.php?id=<{$v.id}>"><{leftstr string=$v.title length=24}></a><span><{$v.time|date_format:"%m-%d"}></span></li>
+        <{/foreach}>
+      </ul>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <!--主体右侧结束-->
+  <div class="clear"></div>
+</div>
+<!--主体结束-->
+<div id="content">
+<a href="list.php?fid=26"><div style="width:50px; height:156px; cursor:pointer;"></div></a>
+  <ul>
+  <div id="b" style="overflow:hidden;height:160px;width:920px;">
+  <div>
+  	<table><tr><td id="b1">
+    	<table><tr>
+    	<{foreach item=v from=$news4}>
+        <td><li><a target="_new" href="view.php?id=<{$v.id}>"><img width="200" height="134" src="<{$v.titlepic}>" /></a></li></td>
+        <{/foreach}>
+        </tr></table>
+    </td><td id="b2">
+    
+    </td></tr></table>
+    </div>
+    </div>
+    <div class="clear"></div>
+    <script type="text/javascript">
+		boxmove("b","b1","b2",4); 
+	</script> 
+  </ul>
+</div>
+<!--底部-->
+<{include file="foot.tpl"}>
+<!--底部结束-->
+</body>
+</html>
